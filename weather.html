@@ -4,84 +4,159 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e0f7fa;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        #weatherApp {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #weatherApp h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #cityInput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #getWeatherBtn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #getWeatherBtn:hover {
+            background-color: #0056b3;
+        }
+
+        #forecast {
+            margin-top: 20px;
+        }
+
+        .forecast-day {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .forecast-day img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .loading-indicator {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #error {
+            display: none;
+            color: #d9534f;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="weather-side">
-            <div class="weather-gradient"></div>
-            <div class="date-container">
-                <h2 class="date-dayname">Tuesday</h2>
-                <span class="date-day">15 Jan 2019</span>
-                <i class="location-icon" data-feather="map-pin"></i>
-                <span class="location">Paris, FR</span>
-            </div>
-            <div class="weather-container">
-                <i class="weather-icon" data-feather="sun"></i>
-                <h1 class="weather-temp">29°C</h1>
-                <h3 class="weather-desc">Sunny</h3>
-            </div>
-        </div>
-        <div class="info-side">
-            <div class="today-info-container">
-                <div class="today-info">
-                    <div class="precipitation">
-                        <span class="title">PRECIPITATION</span>
-                        <span class="value">0 %</span>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="humidity">
-                        <span class="title">HUMIDITY</span>
-                        <span class="value">34 %</span>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="wind">
-                        <span class="title">WIND</span>
-                        <span class="value">0 km/h</span>
-                        <div class="clear"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="week-container">
-                <ul class="week-list">
-                    <!-- Weekly forecast items will be inserted here -->
-                </ul>
-            </div>
-            <div class="location-container">
-                <select id="city-select" class="city-select">
-                    <option value="">Select a city</option>
-                    <!-- Options will be populated by JavaScript -->
-                </select>
-                <button class="location-button">
-                    <i data-feather="map-pin"></i>
-                    <span>Change location</span>
-                </button>
-            </div>
-        </div>
-        <div class="weather-container">
-            <div class="current-weather">
-                <h2>Current Weather</h2>
-                <div id="current-weather"></div>
-            </div>
-            <div class="hourly-forecast">
-                <h2>Hourly Forecast</h2>
-                <div id="hourly-forecast"></div>
-            </div>
-            <div class="daily-forecast">
-                <h2>Daily Forecast</h2>
-                <div id="daily-forecast"></div>
-            </div>
-            <div class="historical-weather">
-                <h2>Historical Weather</h2>
-                <div id="historical-weather"></div>
-            </div>
-        </div>
+    <div id="weatherApp">
+        <h2>Weather App</h2>
+        <input type="text" id="cityInput" placeholder="Enter city name" aria-label="City Name" />
+        <button id="getWeatherBtn">Get Weather</button>
+        <div id="error"></div>
+        <div id="forecast"></div>
+        <div class="loading-indicator" id="loading">Loading...</div>
     </div>
-    <h3>note:</h3>
-    <ul><li>create dropdown for cities
-        
-    </li></ul>
-    <script src="script.js"></script>
+
+    <script>
+        const apiKey = 'b159b54464fafa63fa6862689a514995';
+        const cityInput = document.getElementById('cityInput');
+        const getWeatherBtn = document.getElementById('getWeatherBtn');
+        const forecastElement = document.getElementById('forecast');
+        const errorElement = document.getElementById('error');
+        const loadingElement = document.getElementById('loading');
+
+        getWeatherBtn.addEventListener('click', () => {
+            const city = cityInput.value.trim();
+            if (city) {
+                getWeather(city);
+            } else {
+                showError('Please enter a valid city name.');
+            }
+        });
+
+        async function getWeather(city) {
+            loadingElement.style.display = 'block';
+            errorElement.style.display = 'none';
+            forecastElement.innerHTML = '';
+
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayWeather(data);
+                } else {
+                    showError(data.message);
+                }
+            } catch (error) {
+                showError('Unable to fetch weather data. Please try again later.');
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function displayWeather(data) {
+            forecastElement.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const day = data.list[i * 8]; 
+                const date = new Date(day.dt_txt);
+                const temp = Math.round(day.main.temp);
+                const weatherDescription = day.weather[0].description;
+                const icon = day.weather[0].icon;
+
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('forecast-day');
+                dayElement.innerHTML = `
+                    <div>${date.toLocaleDateString(undefined, { weekday: 'long' })}</div>
+                    <div><img src="https://openweathermap.org/img/wn/${icon}.png" alt="${weatherDescription}"></div>
+                    <div>${temp}°C</div>
+                    <div>${weatherDescription}</div>
+                `;
+                forecastElement.appendChild(dayElement);
+            }
+        }
+    </script>
 </body>
 </html>
