@@ -1,0 +1,141 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.weather-side {
+    flex: 2;
+    background: linear-gradient(to bottom, #00aaff, #004f7b);
+    color: white;
+    padding: 20px;
+    position: relative;
+}
+
+.weather-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 0;
+}
+
+.date-container {
+    position: relative;
+    z-index: 1;
+}
+
+.date-dayname {
+    font-size: 2rem;
+}
+
+.date-day {
+    font-size: 1.2rem;
+}
+
+.location-icon, .weather-icon {
+    margin: 10px 0;
+}
+
+.weather-temp {
+    font-size: 4rem;
+    margin: 0;
+}
+
+.weather-desc {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.info-side {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.today-info-container {
+    margin-bottom: 20px;
+}
+
+.today-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.today-info div {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+}
+
+.title {
+    display: block;
+    font-weight: bold;
+}
+
+.value {
+    display: block;
+    font-size: 1.2rem;
+}
+
+.week-container {
+    margin-bottom: 20px;
+}
+
+.week-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.week-list li {
+    text-align: center;
+    flex: 1;
+}
+
+.week-list li.active {
+    background: #00aaff;
+    color: white;
+    border-radius: 8px;
+}
+
+.day-icon {
+    display: block;
+    margin: 0 auto;
+    font-size: 2rem;
+}
+
+.location-container {
+    text-align: center;
+}
+
+.location-button {
+    background: #00aaff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.location-button i {
+    margin-right: 8px;
+}
+
+.clear {
+    clear: both;
+}
