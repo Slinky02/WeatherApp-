@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const apiKey = 'b159b54464fafa63fa6862689a514995'; // API key added here
+    const apiKey = 'Api key'; // API key added here
     const defaultCity = 'Johannesburg';
 
     populateCityDropdown();
@@ -48,7 +48,7 @@ function populateCityDropdown() {
 }
 
 function fetchWeatherData(city) {
-    const apiKey = 'b159b54464fafa63fa6862689a514995'; // API key added here
+    const apiKey = 'Api key'; // API key added here
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
         .then(data => {
@@ -93,7 +93,7 @@ function getWeatherIcon(weatherMain) {
 }
 
 function fetchWeeklyForecast(city) {
-    const apiKey = 'b159b54464fafa63fa6862689a514995'; // API key added here
+    const apiKey = 'Api key'; // API key added here
     fetch(`https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&appid=${apiKey}&units=metric&cnt=7`)
         .then(response => response.json())
         .then(data => {
@@ -126,7 +126,7 @@ function updateWeeklyForecastUI(data) {
 
 
 function fetchCurrentWeather(city) {
-    const apiKey = 'b159b54464fafa63fa6862689a514995';
+    const apiKey = 'Api key';
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
         .then(data => {
@@ -150,7 +150,7 @@ function updateCurrentWeatherUI(data) {
 
 
 function fetchHourlyForecast(city) {
-    const apiKey = 'b159b54464fafa63fa6862689a514995';
+    const apiKey = 'Api key';
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
         .then(data => {
@@ -179,7 +179,7 @@ function updateHourlyForecastUI(data) {
 
 
 function fetchDailyForecast(city) {
-    const apiKey = 'b159b54464fafa63fa6862689a514995';
+    const apiKey = 'Api key';
     fetch(`https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&appid=${apiKey}&units=metric&cnt=7`)
         .then(response => response.json())
         .then(data => {
@@ -208,7 +208,7 @@ function updateDailyForecastUI(data) {
 
 
 function fetchHistoricalWeather(lat, lon, date) {
-    const apiKey = 'b159b54464fafa63fa6862689a514995';
+    const apiKey = 'Api key';
     const timestamp = Math.floor(new Date(date).getTime() / 1000);
     fetch(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${timestamp}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
